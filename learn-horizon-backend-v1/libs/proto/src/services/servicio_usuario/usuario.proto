@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package usuario;
+
+import "google/protobuf/empty.proto";
+
+// ----------- ENUMS -----------
+
+enum Genero {
+  GENERO_NO_DEFINIDO = 0;
+  MASCULINO = 1;
+  FEMENINO = 2;
+  OTRO = 3;
+}
+
+enum EstadoUsuario {
+  ESTADO_NO_DEFINIDO = 0;
+  ACTIVO = 1;
+  INACTIVO = 2;
+  SUSPENDIDO = 3;
+  ELIMINADO = 4;
+}
+
+enum RolUsuario {
+  ROL_NO_DEFINIDO = 0;
+  USUARIO = 1;
+  ADMINISTRADOR = 2;
+  MODERADOR = 3;
+  RESPONSABLE = 4;
+}
+
+// ----------- MENSAJES -----------
+
+message Usuario {
+  string id = 1;
+  string correoElectronico = 2;
+  string nombres = 3;
+  string apellidos = 4;
+  string telefonoMovil = 5;
+  string fechaNacimiento = 6;
+  Genero genero = 7;
+  EstadoUsuario estado = 8;
+  RolUsuario rol = 9;
+  string creadoEn = 10;
+  string actualizadoEn = 11;
+}
+
+message UsuarioId {
+  string id = 1;
+}
+
+message CrearUsuarioRequest {
+  string correoElectronico = 1;
+  string nombres = 2;
+  string apellidos = 3;
+  string telefonoMovil = 4;
+  string fechaNacimiento = 5;
+  Genero genero = 6;
+  RolUsuario rol = 7;
+}
+
+message ActualizarUsuarioRequest {
+  string id = 1;
+  string correoElectronico = 2;
+  string nombres = 3;
+  string apellidos = 4;
+  string telefonoMovil = 5;
+  string fechaNacimiento = 6;
+  Genero genero = 7;
+  EstadoUsuario estado = 8;
+  RolUsuario rol = 9;
+}
+
+message ListarUsuariosRequest {
+  int32 offset = 1;
+  int32 limit = 2;
+}
+
+message ListarUsuariosResponse {
+  repeated Usuario usuarios = 1;
+}
+
+// ----------- SERVICIO -----------
+
+service UsuarioService {
+  rpc CrearUsuario (CrearUsuarioRequest) returns (Usuario);
+  rpc ObtenerUsuarioPorId (UsuarioId) returns (Usuario);
+  rpc ActualizarUsuario (ActualizarUsuarioRequest) returns (Usuario);
+  rpc EliminarUsuario (UsuarioId) returns (google.protobuf.Empty);
+  rpc ListarUsuarios (ListarUsuariosRequest) returns (ListarUsuariosResponse);
+}

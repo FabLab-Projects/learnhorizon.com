@@ -1,0 +1,45 @@
+generator cliente {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/cliente"
+}
+
+datasource bd {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id                String        @id @default(uuid())
+  correoElectronico String        @unique
+  nombres           String
+  apellidos         String
+  telefonoMovil     String?       @unique
+  fechaNacimiento   DateTime?
+  genero            Genero?
+  estado            EstadoUsuario @default(ACTIVO)
+  rol               RolUsuario    @default(USUARIO)
+  creadoEn          DateTime      @default(now())
+  actualizadoEn     DateTime      @updatedAt
+
+  @@map("usuarios")
+}
+
+enum Genero {
+  MASCULINO
+  FEMENINO
+  OTRO
+}
+
+enum EstadoUsuario {
+  ACTIVO
+  INACTIVO
+  SUSPENDIDO
+  ELIMINADO
+}
+
+enum RolUsuario {
+  USUARIO
+  ADMINISTRADOR
+  MODERADOR
+  RESPONSABLE
+}
